@@ -34,29 +34,29 @@ output "http_tcp_listener_ids" {
   )
 }
 
-# output "https_listener_arns" {
-#   description = "The ARNs of the HTTPS load balancer listeners created."
-#   value = slice(
-#     concat(
-#       aws_lb_listener.frontend_https.*.arn,
-#       aws_lb_listener.frontend_https_no_logs.*.arn,
-#     ),
-#     0,
-#     var.https_listeners_count,
-#   )
-# }
+output "https_listener_arns" {
+  description = "The ARNs of the HTTPS load balancer listeners created."
+  value = slice(
+    concat(
+      aws_lb_listener.frontend_https.*.arn,
+      aws_lb_listener.frontend_https_no_logs.*.arn,
+    ),
+    0,
+    var.https_listeners_count,
+  )
+}
 
-# output "https_listener_ids" {
-#   description = "The IDs of the load balancer listeners created."
-#   value = slice(
-#     concat(
-#       aws_lb_listener.frontend_https.*.id,
-#       aws_lb_listener.frontend_https_no_logs.*.id,
-#     ),
-#     0,
-#     var.https_listeners_count,
-#   )
-# }
+output "https_listener_ids" {
+  description = "The IDs of the load balancer listeners created."
+  value = slice(
+    concat(
+      aws_lb_listener.frontend_https.*.id,
+      aws_lb_listener.frontend_https_no_logs.*.id,
+    ),
+    0,
+    var.https_listeners_count,
+  )
+}
 
 output "load_balancer_arn_suffix" {
   description = "ARN suffix of our load balancer - can be used with CloudWatch."
