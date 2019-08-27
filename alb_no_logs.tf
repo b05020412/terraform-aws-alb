@@ -132,27 +132,27 @@ resource "aws_lb_listener" "frontend_http_tcp_no_logs" {
   }
 }
 
-resource "aws_lb_listener" "frontend_https_no_logs" {
-  load_balancer_arn = element(concat(aws_lb.application_no_logs.*.arn, [""]), 0)
-  port              = var.https_listeners[count.index]["port"]
-  protocol          = "HTTPS"
-  certificate_arn   = var.https_listeners[count.index]["certificate_arn"]
-  ssl_policy = lookup(
-    var.https_listeners[count.index],
-    "ssl_policy",
-    var.listener_ssl_policy_default,
-  )
-  count = var.create_alb && false == var.logging_enabled ? var.https_listeners_count : 0
+# resource "aws_lb_listener" "frontend_https_no_logs" {
+#   load_balancer_arn = element(concat(aws_lb.application_no_logs.*.arn, [""]), 0)
+#   port              = var.https_listeners[count.index]["port"]
+#   protocol          = "HTTPS"
+#   certificate_arn   = var.https_listeners[count.index]["certificate_arn"]
+#   ssl_policy = lookup(
+#     var.https_listeners[count.index],
+#     "ssl_policy",
+#     var.listener_ssl_policy_default,
+#   )
+#   count = var.create_alb && false == var.logging_enabled ? var.https_listeners_count : 0
 
-  default_action {
-    target_group_arn = aws_lb_target_group.main_no_logs[lookup(var.https_listeners[count.index], "target_group_index", 0)].id
-    type             = "forward"
-  }
-}
+#   default_action {
+#     target_group_arn = aws_lb_target_group.main_no_logs[lookup(var.https_listeners[count.index], "target_group_index", 0)].id
+#     type             = "forward"
+#   }
+# }
 
-resource "aws_lb_listener_certificate" "https_listener_no_logs" {
-  listener_arn    = aws_lb_listener.frontend_https_no_logs[var.extra_ssl_certs[count.index]["https_listener_index"]].arn
-  certificate_arn = var.extra_ssl_certs[count.index]["certificate_arn"]
-  count           = var.create_alb && false == var.logging_enabled ? var.extra_ssl_certs_count : 0
-}
+# resource "aws_lb_listener_certificate" "https_listener_no_logs" {
+#   listener_arn    = aws_lb_listener.frontend_https_no_logs[var.extra_ssl_certs[count.index]["https_listener_index"]].arn
+#   certificate_arn = var.extra_ssl_certs[count.index]["certificate_arn"]
+#   count           = var.create_alb && false == var.logging_enabled ? var.extra_ssl_certs_count : 0
+# }
 
